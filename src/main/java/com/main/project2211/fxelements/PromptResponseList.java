@@ -1,5 +1,7 @@
 package com.main.project2211.fxelements;
 
+import javafx.scene.layout.GridPane;
+
 import java.util.ArrayList;
 
 public class PromptResponseList {
@@ -24,10 +26,10 @@ public class PromptResponseList {
             list.remove(0);
     }
 
-    public void update(int i, int i1){
+    public void update(int i, int i1, GridPane parent){
         for (PromptResponse pr:
              list) {
-            pr.draw(i,i1++);
+            pr.draw(i,i1++,parent);
         }
     }
 

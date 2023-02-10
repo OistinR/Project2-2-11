@@ -13,6 +13,14 @@ public class PromptResponse {
     private StackPane stackPrompt = new StackPane();
     private StackPane stackResponse = new StackPane();
 
+    public Text getPrompt() {
+        return prompt;
+    }
+
+    public Text getResponse() {
+        return response;
+    }
+
     public PromptResponse(GridPane parentPane, String prompt, String response){
         this.parentPane = parentPane;
         this.prompt = new Text(prompt);
@@ -31,7 +39,10 @@ public class PromptResponse {
     }
 
     public void update(){
-        System.out.println(response.getText());
+
+        stackPrompt = new StackPane();
+        stackResponse = new StackPane();
+
         Rectangle backRectanglePrompt = new Rectangle(newlineCount(prompt.getText())*20,longestLineCount(prompt.getText())*6,longestLineCount(prompt.getText())*6,newlineCount(prompt.getText())*20);
         backRectanglePrompt.setFill(Color.LIGHTGREY);
         backRectanglePrompt.setStroke(Color.BLACK);
@@ -43,7 +54,8 @@ public class PromptResponse {
         stackResponse.getChildren().addAll(backRectangleResponse,this.response);
     }
 
-    public void draw(int i, int i1){
+    public void draw(int i, int i1, GridPane parentPane){
+        update();
         parentPane.add(stackPrompt,i,i1);
         parentPane.add(new Text("->"),i+1,i1);
         parentPane.add(stackResponse,i+2,i1);
@@ -64,5 +76,15 @@ public class PromptResponse {
         return  max;
     }
 
+    @Override
+    public String toString() {
+        return "PromptResponse{" +
+                "parentPane=" + parentPane +
+                ", prompt=" + prompt +
+                ", response=" + response +
+                ", stackPrompt=" + stackPrompt +
+                ", stackResponse=" + stackResponse +
+                '}';
+    }
 }
 

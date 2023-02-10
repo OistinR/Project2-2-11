@@ -12,44 +12,72 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class MainApplication extends Application {
+    private PromptResponseList prList;
+    private GridPane gridPane;
+    private TextField inputField;
+    Button submitButton;
+    Text promptsTitle;
+    Text ResponseTitle;
+    Scene scene;
+    Stage stage;
+
     @Override
     public void start(Stage stage) throws IOException {
-        TextField textField2 = new TextField();
-        Button button1 = new Button("Submit");
-        GridPane gridPane = new GridPane();
+        this.stage = stage;
+        //this is for display only
+        PromptResponse pr1 = new PromptResponse(gridPane,"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do \neiusmod tempor incididunt ut labore et dolore magna aliqua.\nNullam eget felis eget nunc. Morbi tincidunt augue interdum\n velit euismod. Enim ut sem viverra aliquet eget sit amet tellus.\n Sodales neque sodales ut etiam sit.", "Viverra suspendisse potenti nullam ac.");
+        PromptResponse pr2 = new PromptResponse(gridPane,"Ipsum consequat nisl vel pretium lectus. Elit scelerisque mauris\n pellentesque pulvinar pellentesque habitant morbi.", "Egestas dui id ornare arcu odio ut.\n Aliquam faucibus purus in massa tempor nec");
+        PromptResponse pr3 = new PromptResponse(gridPane,"Egestas dui id ornare arcu odio ut.\n Aliquam faucibus purus in massa tempor nec", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do \neiusmod tempor incididunt ut labore et dolore magna aliqua.\nNullam eget felis eget nunc. Morbi tincidunt augue interdum\n velit euismod. Enim ut sem viverra aliquet eget sit amet tellus.\n Sodales neque sodales ut etiam sit.");
+        prList= new PromptResponseList(4);
+        prList.add(pr1);
+        prList.add(pr2);
+        prList.add(pr3);
+        prList.add(new PromptResponse(gridPane,"Ut lectus arcu bibendum at varius.", "Ut lectus arcu bibendum at varius."));
+
+        stage.setTitle("D.A.C.S Assistant v0.0.1");
+        update();
+        stage.show();
+    }
+
+    public void update(){
+        inputField = new TextField();
+        submitButton = new Button("Submit");
+        gridPane = new GridPane();
         gridPane.setMinSize(400, 200);
         gridPane.setPadding(new Insets(5, 5, 5, 5));
         gridPane.setVgap(5);
         gridPane.setHgap(5);
         gridPane.setAlignment(Pos.TOP_LEFT);
+        promptsTitle = new Text("Prompts: ");
+        ResponseTitle = new Text("Responses: ");
+        promptsTitle.setStyle("-fx-font: 16 arial;");
+        gridPane.add(promptsTitle,0,0);
+        ResponseTitle.setStyle("-fx-font: 16 arial;");
+        gridPane.add(ResponseTitle,2,0);
 
-        PromptResponse pr = new PromptResponse(gridPane,"the quick brown fox jumps over the lazy dossssssssssssssssg\nnew line\nnewerline", "test2");
-        PromptResponse pr2 = new PromptResponse(gridPane,"test3", "the quick brown fox jumps over the lazy dog\nnew line\nnewerline");
-        PromptResponse pr3 = new PromptResponse(gridPane,"test3", "test4");
-        PromptResponseList prList= new PromptResponseList(4);
-        prList.add(pr);
-        prList.add(pr2);
-        prList.add(pr3);
-        prList.add(new PromptResponse(gridPane,"test6", "test7"));
+        prList.update(0,1,gridPane);
 
-        prList.update(0,0);
-        //Creating a scene object
-        Scene scene = new Scene(gridPane);
+        submitButton.setOnAction(event ->{
+            submitPrompt();
+        });
 
-        //Setting title to the Stage
-        stage.setTitle("Grid Pane Example");
-
-        //Adding scene to the stage
+        System.out.println(prList.getList().get(0));
+        gridPane.add(inputField,0,prList.getSize()+1);
+        gridPane.add(submitButton,2,prList.getSize()+1);
+        scene = new Scene(gridPane);
         stage.setScene(scene);
+    }
 
-        //Displaying the contents of the stage
-        stage.show();
+    public void submitPrompt(){
+        prList.add(new PromptResponse(gridPane,inputField.getText(),"no responses."));
+        update();
     }
 
     public static void main(String[] args) {
