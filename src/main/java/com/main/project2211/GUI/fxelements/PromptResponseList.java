@@ -1,4 +1,4 @@
-package com.main.project2211.fxelements;
+package com.main.project2211.GUI.fxelements;
 
 import javafx.scene.layout.GridPane;
 
@@ -27,9 +27,11 @@ public class PromptResponseList {
     }
 
     public void update(int i, int i1, GridPane parent){
+        int j = i1;
         for (PromptResponse pr:
              list) {
-            pr.draw(i,i1++,parent);
+            pr.draw(i,j,parent);
+            j+=3;
         }
     }
 

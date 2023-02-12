@@ -1,4 +1,4 @@
-package com.main.project2211;
+package com.main.project2211.GUI;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

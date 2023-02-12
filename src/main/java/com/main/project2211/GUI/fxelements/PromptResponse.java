@@ -1,5 +1,6 @@
-package com.main.project2211.fxelements;
+package com.main.project2211.GUI.fxelements;
 
+import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -7,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class PromptResponse {
+    private int fontSize =12;
     private GridPane parentPane;
     private Text prompt;
     private Text response;
@@ -35,20 +37,30 @@ public class PromptResponse {
 
     public void setResponse(String response) {
         this.response = new Text(response);
-
     }
 
     public void update(){
-
         stackPrompt = new StackPane();
         stackResponse = new StackPane();
+        //types of font
+//        System.out.println(
+//        Font.getFamilies());
 
-        Rectangle backRectanglePrompt = new Rectangle(newlineCount(prompt.getText())*20,longestLineCount(prompt.getText())*6,longestLineCount(prompt.getText())*6,newlineCount(prompt.getText())*20);
-        backRectanglePrompt.setFill(Color.LIGHTGREY);
+
+        prompt.setStyle("-fx-font: "+fontSize+" arial;");
+        response.setStyle("-fx-font: "+fontSize+" arial;");
+
+        Rectangle backRectanglePrompt = new Rectangle(0,0,longestLineCount(prompt.getText())*7+ 20,newlineCount(prompt.getText())*20);
+        backRectanglePrompt.setFill(Color.LIGHTGREEN);
         backRectanglePrompt.setStroke(Color.BLACK);
-        Rectangle backRectangleResponse = new Rectangle(newlineCount(response.getText())*20,longestLineCount(response.getText())*6,longestLineCount(response.getText())*6,newlineCount(response.getText())*20);
-        backRectangleResponse.setFill(Color.LIGHTGREY);
+        backRectanglePrompt.setArcHeight(30);
+        backRectanglePrompt.setArcWidth(30);
+
+        Rectangle backRectangleResponse = new Rectangle(0,0,longestLineCount(response.getText())*7+20,newlineCount(response.getText())*20);
+        backRectangleResponse.setFill(Color.PINK);
         backRectangleResponse.setStroke(Color.BLACK);
+        backRectangleResponse.setArcHeight(30);
+        backRectangleResponse.setArcWidth(30);
 
         stackPrompt.getChildren().addAll(backRectanglePrompt,this.prompt);
         stackResponse.getChildren().addAll(backRectangleResponse,this.response);
@@ -57,14 +69,20 @@ public class PromptResponse {
     public void draw(int i, int i1, GridPane parentPane){
         update();
         parentPane.add(stackPrompt,i,i1);
-        parentPane.add(new Text("->"),i+1,i1);
-        parentPane.add(stackResponse,i+2,i1);
+
+        parentPane.add(stackResponse,i,i1+1);
+        parentPane.add(new Text("\t"),i,i1+2);
+        prompt.setTranslateX(10);
+        response.setTranslateX(-10);
+        stackPrompt.setAlignment(Pos.CENTER_LEFT);
+        stackResponse.setAlignment(Pos.CENTER_RIGHT);
     }
 
     private int newlineCount(String string){
         String[] lines = string.split("\r\n|\r|\n");
         return  lines.length;
     }
+
     private int longestLineCount(String string){
         String[] lines = string.split("\r\n|\r|\n");
         int max = 0;

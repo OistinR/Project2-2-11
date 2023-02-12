@@ -4,5 +4,7 @@ module com.main.project2211 {
 
 
     opens com.main.project2211 to javafx.fxml;
-    exports com.main.project2211;
+
+    exports com.main.project2211.GUI;
+    opens com.main.project2211.GUI to javafx.fxml;
 }
