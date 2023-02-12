@@ -42,10 +42,6 @@ public class PromptResponse {
     public void update(){
         stackPrompt = new StackPane();
         stackResponse = new StackPane();
-        //types of font
-//        System.out.println(
-//        Font.getFamilies());
-
 
         prompt.setStyle("-fx-font: "+fontSize+" arial;");
         response.setStyle("-fx-font: "+fontSize+" arial;");
@@ -53,14 +49,14 @@ public class PromptResponse {
         Rectangle backRectanglePrompt = new Rectangle(0,0,longestLineCount(prompt.getText())*7+ 20,newlineCount(prompt.getText())*20);
         backRectanglePrompt.setFill(Color.LIGHTGREEN);
         backRectanglePrompt.setStroke(Color.BLACK);
-        backRectanglePrompt.setArcHeight(30);
-        backRectanglePrompt.setArcWidth(30);
+        backRectanglePrompt.setArcHeight(20);
+        backRectanglePrompt.setArcWidth(20);
 
         Rectangle backRectangleResponse = new Rectangle(0,0,longestLineCount(response.getText())*7+20,newlineCount(response.getText())*20);
         backRectangleResponse.setFill(Color.PINK);
         backRectangleResponse.setStroke(Color.BLACK);
-        backRectangleResponse.setArcHeight(30);
-        backRectangleResponse.setArcWidth(30);
+        backRectangleResponse.setArcHeight(20);
+        backRectangleResponse.setArcWidth(20);
 
         stackPrompt.getChildren().addAll(backRectanglePrompt,this.prompt);
         stackResponse.getChildren().addAll(backRectangleResponse,this.response);
@@ -69,9 +65,9 @@ public class PromptResponse {
     public void draw(int i, int i1, GridPane parentPane){
         update();
         parentPane.add(stackPrompt,i,i1);
-
         parentPane.add(stackResponse,i,i1+1);
         parentPane.add(new Text("\t"),i,i1+2);
+
         prompt.setTranslateX(10);
         response.setTranslateX(-10);
         stackPrompt.setAlignment(Pos.CENTER_LEFT);

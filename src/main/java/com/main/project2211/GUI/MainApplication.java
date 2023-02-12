@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -18,7 +19,6 @@ public class MainApplication extends Application {
     private GridPane gridPane;
     private TextArea inputField;
     private Button submitButton;
-    private Text promptsTitle;
     private Scene scene;
     private Stage stage;
 
@@ -40,27 +40,33 @@ public class MainApplication extends Application {
         inputField.setMaxWidth(400);
 
         submitButton = new Button("Submit");
+
         gridPane = new GridPane();
-        gridPane.setMinSize(600, 720);
-        gridPane.setMaxSize(600,720);
+        gridPane.setStyle("-fx-background-color: #b8cee0;");
+//        gridPane.setGridLinesVisible(true);
+        gridPane.setMinSize(700, 650);
+        gridPane.setMaxSize(700,650);
         gridPane.setPadding(new Insets(5, 5, 5, 5));
         gridPane.setVgap(5);
         gridPane.setHgap(5);
         gridPane.setAlignment(Pos.CENTER);
 
-        promptsTitle = new Text("Chat: ");
-        promptsTitle.setStyle("-fx-font: 12 arial;");
-        gridPane.add(promptsTitle,0,0);
-
-        prList.update(0,1,gridPane);
+        prList.update(0,0,gridPane);
         inputField.setWrapText(true);
         submitButton.setOnAction(event ->{
             submitPrompt();
         });
 
         int sharedRowCount = gridPane.getRowCount()+1;
-        gridPane.add(inputField,0, sharedRowCount);
-        gridPane.add(submitButton,1,sharedRowCount);
+
+        HBox hbLayout = new HBox();
+        hbLayout.setPadding(new Insets(15, 12, 15, 12));
+        hbLayout.setSpacing(5);
+        hbLayout.setStyle("-fx-background-color: #9bcbef;-fx-border-color: black;");
+        hbLayout.getChildren().addAll(inputField,submitButton);
+
+        gridPane.add(hbLayout,0,sharedRowCount);
+
         submitButton.setAlignment(Pos.CENTER_LEFT);
         scene = new Scene(gridPane);
         stage.setScene(scene);
@@ -82,7 +88,6 @@ public class MainApplication extends Application {
             inputSize.showAndWait();
             return;
         }
-
         prList.add(new PromptResponse(gridPane,"You:\n"+parseString(inputField.getText()),"Agent:\n"+parseString("No Response")));
         update();
     }
