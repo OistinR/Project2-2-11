@@ -24,9 +24,10 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         this.stage = stage;
 
+//        MainMenu mainMenu = new MainMenu(stage);
+//        mainMenu.update();
+        ChatScreen cs = new ChatScreen(stage);
 
-        MainMenu mainMenu = new MainMenu(stage);
-        mainMenu.update();
         stage.show();
 
     }

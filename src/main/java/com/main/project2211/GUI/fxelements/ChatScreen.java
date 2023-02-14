@@ -1,5 +1,6 @@
 package com.main.project2211.GUI.fxelements;
 
+import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,7 +10,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ChatScreen {
     private PromptResponseList prList;
@@ -19,7 +22,7 @@ public class ChatScreen {
     private Button returnButton;
     private Scene scene;
     private Stage stage;
-
+    private int k;
 
     public ChatScreen(Stage stage){
         this.stage = stage;
@@ -28,6 +31,7 @@ public class ChatScreen {
         prList.add(pr2);
         prList.add(new PromptResponse(gridPane,"You:\n"+"Ut lectus arcu bibendum at varius.", "Agent:\nUt lectus arcu bibendum at varius."));
         stage.setTitle("D.A.C.S Assistant v0.0.1");
+        k=0;
         update();
     }
 
@@ -48,12 +52,19 @@ public class ChatScreen {
         gridPane.setVgap(5);
         gridPane.setHgap(5);
         gridPane.setAlignment(Pos.CENTER);
+        System.out.println(k);
 
-        prList.update(0,0,gridPane);
+        prList.update(0,0,gridPane, k);
+
+        if(k==0){
+            k=1;
+        }
+
         inputField.setWrapText(true);
         submitButton.setOnAction(event ->{
             submitPrompt();
         });
+
         returnButton.setOnAction(e->{
             MainMenu menu = new MainMenu(stage);
             menu.update();
@@ -97,6 +108,7 @@ public class ChatScreen {
             inputSize.showAndWait();
             return;
         }
+
         prList.add(new PromptResponse(gridPane,"You:\n"+parseString(inputField.getText()),"Agent:\n"+parseString("No Response")));
         update();
     }

@@ -1,5 +1,6 @@
 package com.main.project2211.GUI.fxelements;
 
+import javafx.animation.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -8,7 +9,10 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainMenu {
     private VBox verticalPane;
@@ -27,6 +31,38 @@ public class MainMenu {
     }
 
     public void update(){
+
+        final Rectangle rect1 = new Rectangle(10, 10, 100, 100);
+        rect1.setArcHeight(20);
+        rect1.setArcWidth(20);
+        rect1.setFill(Color.RED);
+        verticalPane.getChildren().add(rect1);
+
+        ParallelTransition parallelTransition = new ParallelTransition();
+
+        FadeTransition fadeTransition =
+                new FadeTransition(Duration.millis(3000), rect1);
+        fadeTransition.setFromValue(1.0f);
+        fadeTransition.setToValue(0);
+        fadeTransition.setCycleCount(1);
+        fadeTransition.setAutoReverse(true);
+        TranslateTransition translateTransition =
+                new TranslateTransition(Duration.millis(2000), rect1);
+        translateTransition.setFromY(50);
+        translateTransition.setToY(-100);
+        translateTransition.setCycleCount(1);
+        translateTransition.setAutoReverse(true);
+
+        parallelTransition.getChildren().addAll(
+                fadeTransition,
+                translateTransition
+
+        );
+
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+
+
         verticalPane.setMinSize(200,300);
         verticalPane.setAlignment(Pos.CENTER);
         verticalPane.setSpacing(20);
@@ -45,7 +81,6 @@ public class MainMenu {
         exitButton.setOnAction(e->{
             System.exit(0);
         });
-
 
         verticalPane.getChildren().addAll(chatButton, skillsEditorButton, exitButton);
 
