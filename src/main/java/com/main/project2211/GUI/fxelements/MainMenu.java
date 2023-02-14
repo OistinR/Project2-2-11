@@ -89,7 +89,7 @@ public class MainMenu {
 
     private void gotoChat(){
         ChatScreen chat = new ChatScreen(stage);
-        chat.update();
+
     }
 
 

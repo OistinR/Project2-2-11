@@ -37,7 +37,7 @@ public class PromptResponseList {
                 pr.animate(1250);
             }
 
-            if (count==list.size()-1){
+            else if (count==list.size()-1){
                 pr.animate(750);
             }
             j+=3;
