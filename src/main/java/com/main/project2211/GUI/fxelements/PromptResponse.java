@@ -54,14 +54,14 @@ public class PromptResponse {
         backRectanglePrompt = new Rectangle(0, 0, longestLineCount(prompt.getText()) * 7 + 20, newlineCount(prompt.getText()) * 20);
         backRectanglePrompt.setFill(Color.LIGHTGREEN);
         backRectanglePrompt.setStroke(Color.BLACK);
-        backRectanglePrompt.setArcHeight(20);
-        backRectanglePrompt.setArcWidth(20);
+        backRectanglePrompt.setArcHeight(10);
+        backRectanglePrompt.setArcWidth(15);
 
         backRectangleResponse = new Rectangle(0, 0, longestLineCount(response.getText()) * 7 + 20, newlineCount(response.getText()) * 20);
         backRectangleResponse.setFill(Color.PINK);
         backRectangleResponse.setStroke(Color.BLACK);
-        backRectangleResponse.setArcHeight(20);
-        backRectangleResponse.setArcWidth(20);
+        backRectangleResponse.setArcHeight(10);
+        backRectangleResponse.setArcWidth(15);
 
         stackPrompt.getChildren().addAll(backRectanglePrompt, this.prompt);
         stackResponse.getChildren().addAll(backRectangleResponse, this.response);
