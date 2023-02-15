@@ -6,10 +6,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -27,7 +27,7 @@ public class ChatScreen {
     public ChatScreen(Stage stage){
         this.stage = stage;
         PromptResponse pr2 = new PromptResponse(gridPane,"You:\n"+"Ipsum consequat nisl vel pretium lectus. Elit scelerisque mauris \npellentesque pulvinar pellentesque habitant morbi.", "Agent:\nEgestas dui id ornare arcu odio ut.\nAliquam faucibus purus in massa tempor nec");
-        prList= new PromptResponseList(4);
+        prList= new PromptResponseList(20);
         prList.add(pr2);
         prList.add(new PromptResponse(gridPane,"You:\n"+"Ut lectus arcu bibendum at varius.", "Agent:\nUt lectus arcu bibendum at varius."));
         stage.setTitle("D.A.C.S Assistant v0.0.1");
@@ -44,15 +44,13 @@ public class ChatScreen {
         returnButton = new Button("Menu");
 
         gridPane = new GridPane();
-        gridPane.setStyle("-fx-background-color: #b8cee0;");
+
 //        gridPane.setGridLinesVisible(true);
-        gridPane.setMinSize(700, 650);
-        gridPane.setMaxSize(700,650);
+
         gridPane.setPadding(new Insets(5, 5, 5, 5));
         gridPane.setVgap(5);
         gridPane.setHgap(5);
         gridPane.setAlignment(Pos.CENTER);
-        System.out.println(k);
 
         prList.update(0,0,gridPane, k);
 
@@ -69,26 +67,41 @@ public class ChatScreen {
             MainMenu menu = new MainMenu(stage);
             menu.update();
         });
-        inputField.setTranslateY(10);
 
         int sharedRowCount = gridPane.getRowCount()+1;
 
-        VBox vbLayout = new VBox();
-        vbLayout.setSpacing(5);
-
-        vbLayout.getChildren().addAll(submitButton,returnButton);
 
         HBox hbLayout = new HBox();
         hbLayout.setPadding(new Insets(10, 10, 10, 10));
         hbLayout.setSpacing(5);
-        hbLayout.setStyle("-fx-background-color: #9bcbef;-fx-border-color: black;");
+        hbLayout.setStyle("-fx-background-color:#D97B38;");
 
-        hbLayout.getChildren().addAll(inputField,vbLayout);
+        hbLayout.getChildren().addAll(inputField,submitButton,returnButton);
+        submitButton.setTranslateY(5);
+        returnButton.setTranslateY(5);
 
         gridPane.add(hbLayout,0,sharedRowCount);
+        gridPane.setMinSize(450, 0 );
+        ScrollPane sp = new ScrollPane(gridPane);
 
-        submitButton.setAlignment(Pos.CENTER_LEFT);
-        scene = new Scene(gridPane);
+        VBox vbLayoutOuter = new VBox();
+        vbLayoutOuter.getChildren().addAll(sp,hbLayout);
+        sp.setMinSize(450, 0 );
+        sp.setMaxHeight(500);
+        sp.setFitToWidth(true);
+        sp.setVvalue(1);
+
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        gridPane.setStyle("-fx-background-color: #F3CDB2;");
+        sp.setStyle("-fx-background-color: #F3CDB2;");
+        vbLayoutOuter.setStyle("-fx-background-color: #F3CDB2;");
+
+//        BackgroundFill bgf = new BackgroundFill(Color.web("#F3CDB2"), null, null);
+//        Background bg = new Background(bgf);
+//        sp.setBackground(bg);
+        scene = new Scene(vbLayoutOuter);
         stage.setScene(scene);
     }
 

@@ -52,24 +52,23 @@ public class PromptResponse {
         stackResponse = new StackPane();
 
         backRectanglePrompt = new Rectangle(0, 0, longestLineCount(prompt.getText()) * 7 + 20, newlineCount(prompt.getText()) * 20);
-        backRectanglePrompt.setFill(Color.LIGHTGREEN);
-        backRectanglePrompt.setStroke(Color.BLACK);
+        backRectanglePrompt.setFill(Color.rgb(255, 193, 94));
+        //backRectanglePrompt.setStroke(Color.BLACK);
         backRectanglePrompt.setArcHeight(10);
         backRectanglePrompt.setArcWidth(15);
 
         backRectangleResponse = new Rectangle(0, 0, longestLineCount(response.getText()) * 7 + 20, newlineCount(response.getText()) * 20);
-        backRectangleResponse.setFill(Color.PINK);
-        backRectangleResponse.setStroke(Color.BLACK);
+        backRectangleResponse.setFill(Color.web("#CC5803"));
+        //backRectangleResponse.setStroke();
         backRectangleResponse.setArcHeight(10);
         backRectangleResponse.setArcWidth(15);
 
         stackPrompt.getChildren().addAll(backRectanglePrompt, this.prompt);
         stackResponse.getChildren().addAll(backRectangleResponse, this.response);
 
-
         prompt.setStyle("-fx-font: "+fontSize+" arial;");
         response.setStyle("-fx-font: "+fontSize+" arial;");
-
+//        response.setFill(Color.WHITE);
     }
 
     public void animate(double time){
@@ -160,7 +159,6 @@ public class PromptResponse {
 //        response.setTranslateX(-10);
         stackPrompt.setAlignment(Pos.CENTER_LEFT);
         stackResponse.setAlignment(Pos.CENTER_RIGHT);
-
     }
 
     private int newlineCount(String string){
