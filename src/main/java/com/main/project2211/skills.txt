@@ -1,0 +1,6 @@
+skill : schedule 
+day < monday > = {‘’, ‘’, ‘’, ‘’}
+day < tuesday > = {‘’, ‘’, ‘’, ‘’}
+day < wednesday > = {‘’, ‘’, ‘’, ‘’}
+day < thursday > = {‘’, ‘’, ‘’, ‘’}
+day < saturday > = {‘’, ‘’, ‘’, ‘’}
