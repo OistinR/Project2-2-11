@@ -51,13 +51,16 @@ public class PromptResponse {
         stackPrompt = new StackPane();
         stackResponse = new StackPane();
 
-        backRectanglePrompt = new Rectangle(0, 0, longestLineCount(prompt.getText()) * 7 + 20, newlineCount(prompt.getText()) * 20);
+        //TODO fix scaling bug
+        double scalePrompt = (longestLineCount(prompt.getText())+8)*5.5 ;
+
+        backRectanglePrompt = new Rectangle(0, 0, scalePrompt , newlineCount(prompt.getText()) * 20);
         backRectanglePrompt.setFill(Color.rgb(255, 193, 94));
         //backRectanglePrompt.setStroke(Color.BLACK);
         backRectanglePrompt.setArcHeight(10);
         backRectanglePrompt.setArcWidth(15);
 
-        backRectangleResponse = new Rectangle(0, 0, longestLineCount(response.getText()) * 7 + 20, newlineCount(response.getText()) * 20);
+        backRectangleResponse = new Rectangle(0, 0, (longestLineCount(response.getText())+8) * 5.5 , newlineCount(response.getText()) * 20);
         backRectangleResponse.setFill(Color.web("#CC5803"));
         //backRectangleResponse.setStroke();
         backRectangleResponse.setArcHeight(10);
@@ -101,8 +104,6 @@ public class PromptResponse {
         translateTransition1.setToX(10);
         translateTransition1.setCycleCount(1);
         translateTransition1.setAutoReverse(true);
-
-
 
         FadeTransition fadeTransitionResponse =
                 new FadeTransition(Duration.millis(time), backRectangleResponse);

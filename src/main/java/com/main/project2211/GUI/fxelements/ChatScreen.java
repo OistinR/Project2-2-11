@@ -26,10 +26,10 @@ public class ChatScreen {
 
     public ChatScreen(Stage stage){
         this.stage = stage;
-        PromptResponse pr2 = new PromptResponse(gridPane,"You:\n"+"Ipsum consequat nisl vel pretium lectus. Elit scelerisque mauris \npellentesque pulvinar pellentesque habitant morbi.", "Agent:\nEgestas dui id ornare arcu odio ut.\nAliquam faucibus purus in massa tempor nec");
+        PromptResponse pr2 = new PromptResponse(gridPane,"You:\n"+parseString("Ipsum consequat nisl vel pretium lectus. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi."), "Agent:\n"+parseString("Egestas dui id ornare arcu odio ut.Aliquam faucibus purus in massa tempor nec"));
         prList= new PromptResponseList(20);
         prList.add(pr2);
-        prList.add(new PromptResponse(gridPane,"You:\n"+"Ut lectus arcu bibendum at varius.", "Agent:\nUt lectus arcu bibendum at varius."));
+        prList.add(new PromptResponse(gridPane,"You:\n"+parseString("Ut lectus arcu bibendum at varius."), "Agent:\n"+parseString("Ut lectus arcu bibendum at varius.")));
         stage.setTitle("D.A.C.S Assistant v0.0.1");
         k=0;
         update();
@@ -38,7 +38,7 @@ public class ChatScreen {
     public void update(){
         inputField = new TextArea();
         inputField.setMaxHeight(20);
-        inputField.setMaxWidth(400);
+        inputField.setMaxWidth(300);
 
         submitButton = new Button("Submit");
         returnButton = new Button("Menu");
@@ -98,9 +98,6 @@ public class ChatScreen {
         sp.setStyle("-fx-background-color: #F3CDB2;");
         vbLayoutOuter.setStyle("-fx-background-color: #F3CDB2;");
 
-//        BackgroundFill bgf = new BackgroundFill(Color.web("#F3CDB2"), null, null);
-//        Background bg = new Background(bgf);
-//        sp.setBackground(bg);
         scene = new Scene(vbLayoutOuter);
         stage.setScene(scene);
     }
@@ -122,7 +119,7 @@ public class ChatScreen {
             return;
         }
 
-        prList.add(new PromptResponse(gridPane,"You:\n"+parseString(inputField.getText()),"Agent:\n"+parseString("No Response")));
+        prList.add(new PromptResponse(gridPane,"You:\n"+parseString(inputField.getText()),"Agent:\n"+parseString("asdasllkjhasd asd askjha;skd kajsdh askjdh kajsdhkjsh a;kjsdhk jsahdakjh a;ksjdhkja hsdkjh askjdh kajsdh ")));
         update();
     }
 
@@ -134,7 +131,7 @@ public class ChatScreen {
         String[] lines = inputField.split("\r\n|\r|\n");
         StringBuilder out = new StringBuilder();
         StringBuilder temp = new StringBuilder();
-        int maxLength = 75;
+        int maxLength = 60;
 
         for (String str:lines) {
             if (str.length()>=maxLength){
@@ -150,6 +147,7 @@ public class ChatScreen {
             else
                 out.append(str);
         }
+        System.out.println(out);
         return out.toString();
     }
 
