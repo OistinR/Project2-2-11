@@ -26,6 +26,8 @@ public class ChatScreen {
 
     public ChatScreen(Stage stage){
         this.stage = stage;
+        stage.setX(600);
+        stage.setY(300);
         PromptResponse pr2 = new PromptResponse(gridPane,"You:\n"+parseString("Ipsum consequat nisl vel pretium lectus. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi."), "Agent:\n"+parseString("Egestas dui id ornare arcu odio ut.Aliquam faucibus purus in massa tempor nec"));
         prList= new PromptResponseList(20);
         prList.add(pr2);

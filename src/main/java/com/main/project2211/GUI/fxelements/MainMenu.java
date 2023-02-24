@@ -21,6 +21,8 @@ public class MainMenu {
 
     public MainMenu(Stage stage){
         this.stage = stage;
+        stage.setX(735);
+        stage.setY(300);
         verticalPane = new VBox();
         chatButton = new Button("Assistant");
         skillsEditorButton = new Button("Skills Editor");
@@ -69,10 +71,7 @@ public class MainMenu {
         });
 
         skillsEditorButton.setOnAction(e->{
-            Alert inputSize = new Alert(Alert.AlertType.INFORMATION);
-            inputSize.setTitle("Not implemented");
-            inputSize.setContentText("No method implemented");
-            inputSize.showAndWait();
+            gotoSkills();
         });
 
         exitButton.setOnAction(e->{
@@ -82,11 +81,15 @@ public class MainMenu {
         verticalPane.getChildren().addAll(chatButton, skillsEditorButton, exitButton);
 
         stage.setScene(new Scene(verticalPane));
+        stage.setResizable(false);
     }
 
     private void gotoChat(){
         ChatScreen chat = new ChatScreen(stage);
 
+    }
+    private void gotoSkills(){
+        SkillEditor skill = new SkillEditor(stage);
     }
 
 
