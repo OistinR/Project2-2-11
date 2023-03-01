@@ -1,11 +1,11 @@
 skill : schedule 
-day < monday >
+< monday >
 lecture, party, meeting, sleep
-day < tuesday >
+< tuesday >
 , , , 
-day < wednesday >
+< wednesday >
 , , , 
-day < thursday >
+< thursday >
 , , , 
-day < saturday >
+< saturday >
 , , , 

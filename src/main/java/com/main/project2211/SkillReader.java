@@ -1,8 +1,10 @@
 package com.main.project2211;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -10,11 +12,11 @@ import java.util.List;
 public class SkillReader {
     public static void main(String[] args) throws IOException {
         skillReader("monday");
+
+        String [] a = {"a", "b", "c"};
+        addSkill("name", a);
     }
 
-    // when calling the method will possibly have to add
-    // 'throws IOException' to the method that calls it 
-    // or surround the line w a try/catch 
     public static String skillReader (String input) throws IOException{
 
         // TODO: go through the string input and find the keywords 
@@ -37,8 +39,7 @@ public class SkillReader {
                 break; 
         }
 
-        File f = new File("src/main/java/com/main/project2211/skills.txt");
-        FileReader fr = new FileReader(f);
+        FileReader fr = new FileReader("src/main/java/com/main/project2211/skills.txt");
         BufferedReader br = new BufferedReader(fr);
         String s;     
         String[] words=null;
@@ -56,5 +57,20 @@ public class SkillReader {
             }
         }
         return "no clue";
+    }
+
+    public static void addSkill(String name, String[] vars) throws IOException{
+        FileWriter fw = new FileWriter("src/main/java/com/main/project2211/skills.txt", true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.newLine();
+        bw.write("skill : " + name);
+        for (int i = 0; i < vars.length; i++){
+            bw.newLine();
+            bw.write("< " + vars[i] + " >");
+        }
+        bw.close();
+    }
+
+    public static void editSkill(String name){
     }
 }
