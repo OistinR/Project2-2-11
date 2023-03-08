@@ -14,7 +14,7 @@ public class SkillReader {
         skillReader("monday");
 
         String [] a = {"a", "b", "c"};
-        addSkill("name", a);
+        addSkill("name", a, 5);
     }
 
     public static String skillReader (String input) throws IOException{
@@ -59,7 +59,7 @@ public class SkillReader {
         return "no clue";
     }
 
-    public static void addSkill(String name, String[] vars) throws IOException{
+    public static void addSkill(String name, String[] vars, int domainSize) throws IOException{
         FileWriter fw = new FileWriter("src/main/java/com/main/project2211/skills.txt", true);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.newLine();
@@ -67,6 +67,10 @@ public class SkillReader {
         for (int i = 0; i < vars.length; i++){
             bw.newLine();
             bw.write("< " + vars[i] + " >");
+            bw.newLine();
+            for (int j = 0; i < domainSize ; i++){
+                bw.write(", ");
+            }
         }
         bw.close();
     }
