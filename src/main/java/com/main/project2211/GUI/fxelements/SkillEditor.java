@@ -2,14 +2,15 @@ package com.main.project2211.GUI.fxelements;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.Arrays;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,69 +18,56 @@ import javafx.event.EventHandler;
 
 
 public class SkillEditor {
+
+    private String parentPath = "";
+    private String parentDir ="";
     private Button Menubutton;
     private Button saveChanges;
     
     private Stage stage;
-    TextArea skills_area = new TextArea();
+    static TextArea skills_area = new TextArea();
 
+    private final Insets DEFAULTINSETS = new Insets(5, 5, 5, 5);
+    Editor promptsEditor;
+    Editor responsesEditor;
+    Editor domainEditor;
     public SkillEditor(Stage stage){
-
+        String[] temp = openFileChoser();
+        parentPath = temp[1];
+        parentDir = temp[0];
+        skillName = temp[2];
+        promptsEditor = new Editor("Prompts",parentPath+"\\Prompt");
+        responsesEditor = new Editor("Responses", parentPath+"\\Response");
+        domainEditor = new Editor("Domain",parentPath+"\\Domain");
         this.stage = stage;
-        stage.setX(350);
-        stage.setY(300);
-        Menubutton = new Button("Menu");
-        Menubutton.setMinWidth(200);
-        saveChanges = new Button("Save Changes"); 
-        saveChanges.setMinWidth(200);
-        VBox root = new VBox();
-        HBox root2 = new HBox();
-        HBox root3 = new HBox();
-        textIntoTextField("skillsFile.txt");
+        stage.setX(50);
+        stage.setY(50);
 
-        Menubutton.setOnAction(new EventHandler<ActionEvent>() {
+        draw();
+    }
 
-            @Override
-            public void handle(ActionEvent event) {
-                MainMenu menu = new MainMenu(stage);
-                menu.update();
-            }
-        });
+    private void draw(){
 
-        saveChanges.setOnAction(new EventHandler<ActionEvent>() {
+        GridPane gp = new GridPane();
+        gp.setPrefSize(600,400);
 
-            @Override
-            public void handle(ActionEvent event) {
+        gp.add(promptsEditor.draw(),0,0);
+        gp.add(responsesEditor.draw(),1,0);
+        gp.add(domainEditor.draw(),0,1);
+        VBox menu = drawMenu();
+        responsesEditor.root.setMaxHeight(300);
+        GridPane.setMargin(menu,new Insets(0,25,25,25));
+        gp.add(menu,1,1);
 
-                rewriteTextFile();
-                textIntoTextField("skillsFile.txt");
-            }
-        });
+        Scene scene = new Scene(gp);
 
-
-        root.setPadding(new Insets(10));
-        root2.setPadding(new Insets(10));
-        root3.setPadding(new Insets(10));
-        root2.setSpacing(6);
-        root3.setSpacing(115);
-        root.setSpacing(5);
-       
-        root.getChildren().add(new Label("Enter message:"));
-        root3.getChildren().addAll(Menubutton,saveChanges);
-        root2.getChildren().addAll(skills_area);
-        root.getChildren().addAll(root2, root3);
-        
-        Scene scene = new Scene(root);
-
-        stage.setTitle("D.A.C.S Assistant v0.0.1");
+        stage.setTitle("Skills Editor: "+skillName);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
-    
-
-    private void textIntoTextField(String FileName){
+   private void fileTextToTextField(String FileName){
         String line;
         String text2 = "";
         try{
@@ -89,25 +77,22 @@ public class SkillEditor {
                 text2 = text2 + line + "\n";
             }
             skills_area.setText(text2);
-            saveChangesMethode(skills_area.getText());
+//            saveChangesMethode(skills_area.getText(),FileName);
         
-        }catch (Exception e) {
-            System.out.println("LA");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     
     }
 
-    
-    public void saveChangesMethode(String text){
-        
+    public static void saveChangesMethode(String text, String fileName){
         try {
-            FileWriter fw = new FileWriter("skillsFile.txt");
+            FileWriter fw = new FileWriter(fileName);
             fw.write("");
             fw.write(text);
             fw.close();
         } catch (IOException e) {
             System.out.println("ici");
-            
         }
     }
 
@@ -130,7 +115,7 @@ public class SkillEditor {
                         sub += "\n";
                         text += sub;
                         i = j+1;
-                        saveChangesMethode(text); 
+                        saveChangesMethode(text,null);
                     }
                     else if(s.charAt(i) == ' '){
                         System.out.println("quick2");
@@ -138,7 +123,7 @@ public class SkillEditor {
                         sub += "\n";
                         text += sub;
                         i = j+1;
-                        saveChangesMethode(text);
+                        saveChangesMethode(text,null);
                         
                     }
                     else{
@@ -147,7 +132,7 @@ public class SkillEditor {
                         sub += "\n";
                         text += sub;
                         i = j+1;
-                        saveChangesMethode(text);
+                        saveChangesMethode(text,null);
                     }
                 } 
                 else if (!s.contains(".")) { 
@@ -161,8 +146,173 @@ public class SkillEditor {
         }
     }
 
+    VBox outerVbox;
+    HBox upperHbox;
+    HBox lowerHbox;
+    Label textFieldTitle;
+    TextField skillNameTextField;
+    Button loadButton;
+    Button saveAllButton;
+    Button newSkillButton;
+    Button helpButton;
+    Button returnButton;
+    public VBox drawMenu(){
+        outerVbox = new VBox();
+        outerVbox.setPadding(DEFAULTINSETS);
+        upperHbox = new HBox();
+        upperHbox.setPadding(new Insets(5,5,5,0));
+        lowerHbox = new HBox();
+        lowerHbox.setPadding(new Insets(5,5,5,0));
+        textFieldTitle = new Label("Skill Name:");
+        skillNameTextField = new TextField();
+        loadButton = new Button("Load Skill");
+        saveAllButton = new Button("Save Skill");
+        newSkillButton = new Button("New Skill");
+        helpButton = new Button("Help");
+        returnButton = new Button("returnButton");
 
-            
-           
+        loadButton.setOnAction(e->{
+            String[] out = openFileChoser();
+            skillName = out[2];
+            parentPath = out[1];
+            parentDir = out[0];
 
+            promptsEditor = new Editor("Prompts",parentPath+"\\Prompt");
+            responsesEditor = new Editor("Responses", parentPath+"\\Response");
+            domainEditor = new Editor("Domain",parentPath+"\\Domain");
+            draw();
+
+        });
+
+        newSkillButton.setOnAction(e->{
+            createNewSkill();
+        });
+        upperHbox.getChildren().addAll(loadButton,saveAllButton,newSkillButton);
+        lowerHbox.getChildren().addAll(helpButton,returnButton);
+        outerVbox.getChildren().addAll(textFieldTitle,skillNameTextField,upperHbox,lowerHbox);
+
+        return outerVbox;
+    }
+
+    private String[] openFileChoser(){
+        String[] output = new String[3];
+
+        DirectoryChooser dChooser = new DirectoryChooser();
+        dChooser.setTitle("Open Skill Folder");
+        dChooser.setInitialDirectory(new File("skill"));
+        output[0] = dChooser.getInitialDirectory().toString();
+        File temp = dChooser.showDialog(stage);
+
+        if(temp!=null){
+            output[1] = temp.getPath();
+            output[2] = temp.getName();
+        }
+        else {
+            output[1]="skill/skill1";
+            output[2]="skill1";
+        }
+        assert temp != null;
+
+//        System.out.println(Arrays.toString(output));
+        return output;
+    }
+    String skillName;
+    private void createNewSkill(){
+        TextInputDialog skillNameDialog = new TextInputDialog();
+        skillNameDialog.setContentText("Enter a name for your new Skill");
+        skillNameDialog.setTitle("Skill Name");
+        skillNameDialog.showAndWait();
+        skillName = skillNameDialog.getEditor().getText();
+
+        new File(parentDir+"\\"+skillName).mkdir();
+
+        try {
+            PrintWriter s1 = new PrintWriter(parentDir+"\\"+skillName+"\\"+"Response");
+            PrintWriter s2 = new PrintWriter(parentDir+"\\"+skillName+"\\"+"Prompt");
+            PrintWriter s3 = new PrintWriter(parentDir+"\\"+skillName+"\\"+"Domain");
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        parentPath = parentDir+"\\"+skillName;
+        promptsEditor = new Editor("Prompts",parentPath+"\\Prompt");
+        responsesEditor = new Editor("Responses", parentPath+"\\Response");
+        domainEditor = new Editor("Domain",parentPath+"\\Domain");
+        draw();
+    }
+
+}
+
+class Editor{
+
+    VBox root;
+    HBox menu;
+    TextArea textArea;
+    Label nameOfElement;
+    Button save;
+    Button reset;
+    String fileName;
+
+    public Editor(String name,String filename){
+        this.fileName = filename;
+        nameOfElement = new Label(name);
+        save = new Button("Save");
+        reset = new Button("Reset");
+
+        Insets defaultInsets = new Insets(5, 5, 5, 5);
+        nameOfElement.setPadding(defaultInsets);
+    }
+
+    public VBox draw(){
+        root = new VBox();
+        menu = new HBox();
+        menu.setSpacing(5);
+        textArea = new TextArea();
+        textArea.setWrapText(true);
+
+        fileTextToTextField(fileName);
+
+        save.setOnAction(e-> {
+            saveChanges(textArea.getText(),fileName);
+        });
+
+        menu.getChildren().addAll(nameOfElement,save,reset);
+        root.getChildren().addAll(menu,textArea);
+
+        return root;
+    }
+    public static void saveChanges(String text, String fileName){
+        try {
+            FileWriter fw = new FileWriter(fileName);
+            fw.write(text);
+            fw.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public TextArea getTextArea() {
+        return textArea;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    private void fileTextToTextField(String FileName){
+        String line;
+        String text2 = "";
+        try{
+            FileReader fr = new FileReader(FileName);
+            BufferedReader br = new BufferedReader(fr);
+            while ((line = br.readLine()) != null){
+                text2 = text2 + line + "\n";
+            }
+            textArea.setText(text2);
+
+        }catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+    }
 }

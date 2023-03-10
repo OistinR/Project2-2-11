@@ -23,11 +23,10 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
+        MainMenu mainMenu = new MainMenu(stage);
+        mainMenu.update();
 
-//        MainMenu mainMenu = new MainMenu(stage);
-//        mainMenu.update();
-        ChatScreen cs = new ChatScreen(stage);
-
+//        ChatScreen cs = new ChatScreen(stage);
         stage.show();
 
     }
