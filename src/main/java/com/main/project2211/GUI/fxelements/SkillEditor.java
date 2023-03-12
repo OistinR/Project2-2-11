@@ -1,9 +1,16 @@
 package com.main.project2211.GUI.fxelements;
 
+import javafx.animation.*;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -14,7 +21,7 @@ import java.util.Arrays;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
+import javafx.util.Duration;
 
 
 public class SkillEditor {
@@ -187,6 +194,7 @@ public class SkillEditor {
         newSkillButton.setOnAction(e->{
             createNewSkill();
         });
+
         upperHbox.getChildren().addAll(loadButton,saveAllButton,newSkillButton);
         lowerHbox.getChildren().addAll(helpButton,returnButton);
         outerVbox.getChildren().addAll(textFieldTitle,skillNameTextField,upperHbox,lowerHbox);
@@ -263,21 +271,42 @@ class Editor{
         nameOfElement.setPadding(defaultInsets);
     }
 
+    private double textAreaX;
+    private double textAreaY;
+
     public VBox draw(){
         root = new VBox();
         menu = new HBox();
         menu.setSpacing(5);
         textArea = new TextArea();
         textArea.setWrapText(true);
-
+        textAreaX = textArea.getTranslateX();
+        textAreaY = textArea.getTranslateY();
         fileTextToTextField(fileName);
+        System.out.println(textArea.getHeight());
+        redRect = new Rectangle(0,0,300,175);//origin, width, height
+        redRect.setStyle("-fx-fill: transparent; -fx-stroke: #fc8181; -fx-stroke-width: 2.5; -fx-opacity: 0");
+
+        redRect.setArcHeight(10);
+        redRect.setArcWidth(10);
+        redRect.setFill(Color.TRANSPARENT);
 
         save.setOnAction(e-> {
             saveChanges(textArea.getText(),fileName);
+            greenAnimation();
         });
 
+        reset.setOnAction(e->{
+            redShakeAnimation();
+        });
+
+        StackPane sp = new StackPane();
+        sp.getChildren().addAll(textArea,redRect);
+        sp.setAlignment(Pos.BOTTOM_LEFT);
+
+
         menu.getChildren().addAll(nameOfElement,save,reset);
-        root.getChildren().addAll(menu,textArea);
+        root.getChildren().addAll(menu,sp);
 
         return root;
     }
@@ -289,6 +318,70 @@ class Editor{
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+    Rectangle redRect;
+    public void redShakeAnimation(){
+        redRect.setStyle("-fx-fill: transparent; -fx-stroke: #fc8181; -fx-stroke-width: 5; -fx-opacity: 0.6");
+
+        FadeTransition ft = new FadeTransition(Duration.millis(600), redRect);
+        ft.setFromValue(.6);
+        ft.setToValue(0);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+
+        ft.play();
+
+        TranslateTransition shakeRight = new TranslateTransition(Duration.millis(100),textArea);
+
+        shakeRight.setToX(textAreaX+5);
+        shakeRight.setCycleCount(1);
+        shakeRight.setAutoReverse(true);
+
+        TranslateTransition shakeLeft = new TranslateTransition(Duration.millis(100),textArea);
+
+        shakeLeft.setToX(textAreaX-5);
+        shakeLeft.setCycleCount(1);
+        shakeLeft.setAutoReverse(true);
+
+        TranslateTransition shakeRight1 = new TranslateTransition(Duration.millis(100),textArea);
+
+        shakeRight1.setToX(textAreaX+5);
+        shakeRight1.setCycleCount(1);
+        shakeRight1.setAutoReverse(true);
+
+        TranslateTransition shakeLeft1 = new TranslateTransition(Duration.millis(100),textArea);
+
+        shakeLeft1.setToX(textAreaX-5);
+        shakeLeft1.setCycleCount(1);
+        shakeLeft1.setAutoReverse(true);
+
+        TranslateTransition shakeRight2 = new TranslateTransition(Duration.millis(100),textArea);
+        shakeRight2.setToX(textAreaX+5);
+        shakeRight2.setCycleCount(1);
+        shakeRight2.setAutoReverse(true);
+
+        TranslateTransition shakeLeft2 = new TranslateTransition(Duration.millis(100),textArea);
+
+        shakeLeft2.setToX(textAreaX);
+        shakeLeft2.setCycleCount(1);
+        shakeLeft2.setAutoReverse(true);
+
+        SequentialTransition st = new SequentialTransition();
+        st.getChildren().addAll(shakeRight,shakeLeft,shakeRight1,shakeLeft1,shakeRight2,shakeLeft2);
+
+        st.play();
+    }
+
+    public void greenAnimation(){
+        redRect.setStyle("-fx-fill: transparent; -fx-stroke: #91fc81; -fx-stroke-width: 5; -fx-opacity: 0.6");
+
+        FadeTransition ft = new FadeTransition(Duration.millis(800), redRect);
+        ft.setFromValue(.8);
+        ft.setToValue(0);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+
+        ft.play();
     }
 
     public TextArea getTextArea() {

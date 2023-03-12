@@ -1,9 +1,6 @@
 package com.main.project2211.GUI;
 
-import com.main.project2211.GUI.fxelements.ChatScreen;
-import com.main.project2211.GUI.fxelements.MainMenu;
-import com.main.project2211.GUI.fxelements.PromptResponse;
-import com.main.project2211.GUI.fxelements.PromptResponseList;
+import com.main.project2211.GUI.fxelements.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,8 +20,9 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
-        MainMenu mainMenu = new MainMenu(stage);
-        mainMenu.update();
+//        MainMenu mainMenu = new MainMenu(stage);
+//        mainMenu.update();
+        SkillEditor sk = new SkillEditor(stage);
 
 //        ChatScreen cs = new ChatScreen(stage);
         stage.show();
